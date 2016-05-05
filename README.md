@@ -1,2 +1,0 @@
-# uexPDFReader
-PDF插件
