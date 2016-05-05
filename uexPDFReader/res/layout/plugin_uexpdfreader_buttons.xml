@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <ViewAnimator 
+    <ViewAnimator
         android:id="@+id/switcher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,7 +14,8 @@
             android:id="@+id/topBar0Main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/plugin_uexpdfreader_toolbar" >
+            android:background="@color/plugin_uexpdfreader_toolbar"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/docNameText"
@@ -37,7 +38,8 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/plugin_uexpdfreader_button"
                 android:contentDescription="Separations"
-                android:onClick="OnSepsButtonClick" />
+                android:onClick="OnSepsButtonClick"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/linkButton"
@@ -47,7 +49,8 @@
                 android:layout_toLeftOf="@+id/reflowButton"
                 android:background="@drawable/plugin_uexpdfreader_button"
                 android:contentDescription="高亮并启用墨迹"
-                android:src="@drawable/plugin_uexpdfreader_ic_link" />
+                android:src="@drawable/plugin_uexpdfreader_ic_link"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/reflowButton"
@@ -57,7 +60,8 @@
                 android:layout_toLeftOf="@+id/outlineButton"
                 android:background="@drawable/plugin_uexpdfreader_button"
                 android:contentDescription="Toggle reflow mode"
-                android:src="@drawable/plugin_uexpdfreader_ic_reflow" />
+                android:src="@drawable/plugin_uexpdfreader_ic_reflow"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/outlineButton"
@@ -67,7 +71,8 @@
                 android:layout_toLeftOf="@+id/searchButton"
                 android:background="@drawable/plugin_uexpdfreader_button"
                 android:contentDescription="目录"
-                android:src="@drawable/plugin_uexpdfreader_ic_list" />
+                android:src="@drawable/plugin_uexpdfreader_ic_list"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/searchButton"
@@ -77,7 +82,8 @@
                 android:layout_toLeftOf="@+id/moreButton"
                 android:background="@drawable/plugin_uexpdfreader_button"
                 android:contentDescription="搜索文档"
-                android:src="@drawable/plugin_uexpdfreader_ic_magnifying_glass" />
+                android:src="@drawable/plugin_uexpdfreader_ic_magnifying_glass"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/moreButton"
@@ -88,7 +94,8 @@
                 android:background="@drawable/plugin_uexpdfreader_button"
                 android:contentDescription="更多"
                 android:onClick="OnMoreButtonClick"
-                android:src="@drawable/plugin_uexpdfreader_ic_more" />
+                android:src="@drawable/plugin_uexpdfreader_ic_more"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -390,7 +397,6 @@
         android:id="@+id/info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/pageSlider"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:background="@drawable/plugin_uexpdfreader_page_num"
