@@ -1,9 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <uexplugins>
     <plugin
-        uexName="uexPDFReader" version="3.0.5.1" build="5">
-        <info>5:隐藏上方工具栏
-              5.1:更改ReaderView的MAX_SCALE变量，调整最大放大倍数</info>
+        uexName="uexPDFReader" version="3.0.6.2" build="6">
+        <info>6:增加了setOptions配置接口(暂未开放，仅Android)
+              6.1:可以设置isShowTools是否显示上方工具栏
+              6.2:可以设置maxScale调整最大方法倍数</info>
+        <build>5:隐藏上方工具栏
+              5.1:更改ReaderView的MAX_SCALE变量，调整最大放大倍数</build>
         <build>4:由于一些特殊字体的pdf无法打开，基于mupdf重写uexPDFReader插件
                4.1:兼容一些特殊字体的pdf
                4.2:优化了方法数,使插件更轻量级;方法数从6837减至1016

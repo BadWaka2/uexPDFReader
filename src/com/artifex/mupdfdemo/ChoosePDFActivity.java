@@ -10,7 +10,7 @@ import java.util.Map;
 import org.zywx.wbpalmstar.engine.universalex.EUExUtil;
 import org.zywx.wbpalmstar.plugin.uexpdf.CloseActivityReceiver;
 import org.zywx.wbpalmstar.plugin.uexpdf.util.LocalBroadcastUtil;
-import org.zywx.wbpalmstar.plugin.uexpdf.util.MyLog;
+import org.zywx.wbpalmstar.plugin.uexpdf.util.MLog;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -219,19 +219,19 @@ public class ChoosePDFActivity extends ListActivity {
 		position -= mDirs.length;
 
 		Uri uri = Uri.fromFile(mFiles[position]);
-		MyLog.getLog().i("uri = " + uri.toString());
+		MLog.getIns().i("uri = " + uri.toString());
 		Intent intent = new Intent(this, MuPDFActivity.class);
 		intent.setAction(Intent.ACTION_VIEW);
 		intent.setData(uri);
 		switch (mPurpose) {
 		case PickPDF:
 			// Start an activity to display the PDF file
-			MyLog.getLog().i("PickPDF");
+			MLog.getIns().i("PickPDF");
 			startActivity(intent);
 			break;
 		case PickKeyFile:
 			// Return the uri to the caller
-			MyLog.getLog().i("PickKeyFile");
+			MLog.getIns().i("PickKeyFile");
 			setResult(RESULT_OK, intent);
 			finish();
 			break;

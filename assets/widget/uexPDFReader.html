@@ -10,7 +10,11 @@
 
 	//回调
 	window.uexOnload = function(type) {
-
+		
+		// 设置配置项回调
+		uexPDFReader.cbSetOptions = function(opCode,dataType,data) {
+			alert("------cbSetOptions------\n" + data);
+		}
 	}
 	
 	//打开PDF
@@ -19,6 +23,15 @@
         var resPath = "res://sample.pdf";
         var resPath2 = "res://PDFDocument.pdf";
 		uexPDFReader.openPDFReader(resPath2);
+	}
+	
+	//设置配置项
+	function setOptions() {
+		var json = {
+				isShowTools : 0,	//是否显示工具栏，0不显示1显示，默认显示
+				maxScale : 3		//最大放大倍数，默认为3，推荐为3-5，太大了会OOM
+		}
+		uexPDFReader.setOptions(JSON.stringify(json));
 	}
 	
 </script>
@@ -31,6 +44,9 @@
 		
 			<span>openPDFReader</span>
 			<input class="btn" type="button" value="打开PDF" onclick="openPDFReader()" /><br /> <br />
+			
+			<span>setOptions</span>
+			<input class="btn" type="button" value="设置配置项" onclick="setOptions()" /><br /> <br />
 			
 			<span>close</span>
 			<input class="btn" type="button" value="关闭" onclick = "uexPDFReader.close()"/><br /> <br />

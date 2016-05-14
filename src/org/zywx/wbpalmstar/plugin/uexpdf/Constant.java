@@ -6,6 +6,10 @@ package org.zywx.wbpalmstar.plugin.uexpdf;
  */
 public class Constant {
 
+	// 回调给前端的标识
+	public static final int SUCCESS = 1;
+	public static final int FAIL = 0;
+
 	// Activity之间跳转的RequestCode
 	public static final int REQUEST_CODE_PDF_PREVIEW_ACTIVITY = 10001;// PDFPreviewActivity
 

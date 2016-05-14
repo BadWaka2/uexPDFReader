@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 import org.zywx.wbpalmstar.engine.universalex.EUExUtil;
+import org.zywx.wbpalmstar.plugin.uexpdf.StaticValues;
+import org.zywx.wbpalmstar.plugin.uexpdf.util.MLog;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -22,8 +24,7 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Scroller;
 
-public class ReaderView extends AdapterView<Adapter>
-		implements GestureDetector.OnGestureListener, ScaleGestureDetector.OnScaleGestureListener, Runnable {
+public class ReaderView extends AdapterView<Adapter> implements GestureDetector.OnGestureListener, ScaleGestureDetector.OnScaleGestureListener, Runnable {
 	private static final int MOVING_DIAGONALLY = 0;
 	private static final int MOVING_LEFT = 1;
 	private static final int MOVING_RIGHT = 2;
@@ -35,7 +36,7 @@ public class ReaderView extends AdapterView<Adapter>
 
 	private static final float MIN_SCALE = 1.0f;
 	// TODO by waka
-	private static final float MAX_SCALE = 3.0f;
+	// private static final float MAX_SCALE = 5.0f;
 	private static final float REFLOW_SCALE_FACTOR = 0.5f;
 
 	private static final boolean HORIZONTAL_SCROLLING = true;
@@ -476,8 +477,7 @@ public class ReaderView extends AdapterView<Adapter>
 			expandedBounds.inset(-FLING_MARGIN, -FLING_MARGIN);
 
 			if (withinBoundsInDirectionOfTravel(bounds, velocityX, velocityY) && expandedBounds.contains(0, 0)) {
-				mScroller.fling(0, 0, (int) velocityX, (int) velocityY, bounds.left, bounds.right, bounds.top,
-						bounds.bottom);
+				mScroller.fling(0, 0, (int) velocityX, (int) velocityY, bounds.left, bounds.right, bounds.top, bounds.bottom);
 				mStepper.prod();
 			}
 		}
@@ -508,7 +508,8 @@ public class ReaderView extends AdapterView<Adapter>
 		float previousScale = mScale;
 		float scale_factor = mReflow ? REFLOW_SCALE_FACTOR : 1.0f;
 		float min_scale = MIN_SCALE * scale_factor;
-		float max_scale = MAX_SCALE * scale_factor;
+		float max_scale = StaticValues.maxScale * scale_factor;
+		MLog.getIns().i("max_scale = " + max_scale);
 		mScale = Math.min(Math.max(mScale * detector.getScaleFactor(), min_scale), max_scale);
 
 		if (mReflow) {
@@ -776,12 +777,10 @@ public class ReaderView extends AdapterView<Adapter>
 			Point leftOffset = subScreenSizeOffset(lv);
 			if (HORIZONTAL_SCROLLING) {
 				int gap = leftOffset.x + GAP + cvOffset.x;
-				lv.layout(cvLeft - lv.getMeasuredWidth() - gap, (cvBottom + cvTop - lv.getMeasuredHeight()) / 2,
-						cvLeft - gap, (cvBottom + cvTop + lv.getMeasuredHeight()) / 2);
+				lv.layout(cvLeft - lv.getMeasuredWidth() - gap, (cvBottom + cvTop - lv.getMeasuredHeight()) / 2, cvLeft - gap, (cvBottom + cvTop + lv.getMeasuredHeight()) / 2);
 			} else {
 				int gap = leftOffset.y + GAP + cvOffset.y;
-				lv.layout((cvLeft + cvRight - lv.getMeasuredWidth()) / 2, cvTop - lv.getMeasuredHeight() - gap,
-						(cvLeft + cvRight + lv.getMeasuredWidth()) / 2, cvTop - gap);
+				lv.layout((cvLeft + cvRight - lv.getMeasuredWidth()) / 2, cvTop - lv.getMeasuredHeight() - gap, (cvLeft + cvRight + lv.getMeasuredWidth()) / 2, cvTop - gap);
 			}
 		}
 
@@ -790,12 +789,10 @@ public class ReaderView extends AdapterView<Adapter>
 			Point rightOffset = subScreenSizeOffset(rv);
 			if (HORIZONTAL_SCROLLING) {
 				int gap = cvOffset.x + GAP + rightOffset.x;
-				rv.layout(cvRight + gap, (cvBottom + cvTop - rv.getMeasuredHeight()) / 2,
-						cvRight + rv.getMeasuredWidth() + gap, (cvBottom + cvTop + rv.getMeasuredHeight()) / 2);
+				rv.layout(cvRight + gap, (cvBottom + cvTop - rv.getMeasuredHeight()) / 2, cvRight + rv.getMeasuredWidth() + gap, (cvBottom + cvTop + rv.getMeasuredHeight()) / 2);
 			} else {
 				int gap = cvOffset.y + GAP + rightOffset.y;
-				rv.layout((cvLeft + cvRight - rv.getMeasuredWidth()) / 2, cvBottom + gap,
-						(cvLeft + cvRight + rv.getMeasuredWidth()) / 2, cvBottom + gap + rv.getMeasuredHeight());
+				rv.layout((cvLeft + cvRight - rv.getMeasuredWidth()) / 2, cvBottom + gap, (cvLeft + cvRight + rv.getMeasuredWidth()) / 2, cvBottom + gap + rv.getMeasuredHeight());
 			}
 		}
 
@@ -867,14 +864,11 @@ public class ReaderView extends AdapterView<Adapter>
 
 		if (!mReflow) {
 			// Work out a scale that will fit it to this view
-			float scale = Math.min((float) getWidth() / (float) v.getMeasuredWidth(),
-					(float) getHeight() / (float) v.getMeasuredHeight());
+			float scale = Math.min((float) getWidth() / (float) v.getMeasuredWidth(), (float) getHeight() / (float) v.getMeasuredHeight());
 			// Use the fitting values scaled by our current scale factor
-			v.measure(View.MeasureSpec.EXACTLY | (int) (v.getMeasuredWidth() * scale * mScale),
-					View.MeasureSpec.EXACTLY | (int) (v.getMeasuredHeight() * scale * mScale));
+			v.measure(View.MeasureSpec.EXACTLY | (int) (v.getMeasuredWidth() * scale * mScale), View.MeasureSpec.EXACTLY | (int) (v.getMeasuredHeight() * scale * mScale));
 		} else {
-			v.measure(View.MeasureSpec.EXACTLY | (int) (v.getMeasuredWidth()),
-					View.MeasureSpec.EXACTLY | (int) (v.getMeasuredHeight()));
+			v.measure(View.MeasureSpec.EXACTLY | (int) (v.getMeasuredWidth()), View.MeasureSpec.EXACTLY | (int) (v.getMeasuredHeight()));
 		}
 	}
 
@@ -898,13 +892,11 @@ public class ReaderView extends AdapterView<Adapter>
 		// There can be scroll amounts not yet accounted for in
 		// onLayout, so add mXScroll and mYScroll to the current
 		// positions when calculating the bounds.
-		return getScrollBounds(v.getLeft() + mXScroll, v.getTop() + mYScroll,
-				v.getLeft() + v.getMeasuredWidth() + mXScroll, v.getTop() + v.getMeasuredHeight() + mYScroll);
+		return getScrollBounds(v.getLeft() + mXScroll, v.getTop() + mYScroll, v.getLeft() + v.getMeasuredWidth() + mXScroll, v.getTop() + v.getMeasuredHeight() + mYScroll);
 	}
 
 	private Point getCorrection(Rect bounds) {
-		return new Point(Math.min(Math.max(0, bounds.left), bounds.right),
-				Math.min(Math.max(0, bounds.top), bounds.bottom));
+		return new Point(Math.min(Math.max(0, bounds.left), bounds.right), Math.min(Math.max(0, bounds.top), bounds.bottom));
 	}
 
 	private void postSettle(final View v) {
@@ -936,8 +928,7 @@ public class ReaderView extends AdapterView<Adapter>
 	}
 
 	private Point subScreenSizeOffset(View v) {
-		return new Point(Math.max((getWidth() - v.getMeasuredWidth()) / 2, 0),
-				Math.max((getHeight() - v.getMeasuredHeight()) / 2, 0));
+		return new Point(Math.max((getWidth() - v.getMeasuredWidth()) / 2, 0), Math.max((getHeight() - v.getMeasuredHeight()) / 2, 0));
 	}
 
 	private static int directionOfTravel(float vx, float vy) {

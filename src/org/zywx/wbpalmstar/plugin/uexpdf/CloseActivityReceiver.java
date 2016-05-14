@@ -1,6 +1,6 @@
 package org.zywx.wbpalmstar.plugin.uexpdf;
 
-import org.zywx.wbpalmstar.plugin.uexpdf.util.MyLog;
+import org.zywx.wbpalmstar.plugin.uexpdf.util.MLog;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -33,12 +33,12 @@ public class CloseActivityReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 
 		String action = intent.getAction();
-		MyLog.getLog().i("action = " + action);
+		MLog.getIns().i("action = " + action);
 
 		// 关闭Activity广播
 		if (action.equals(Constant.ACTION_LOCAL_BROADCAST_CLOSE_ACTIVITY)) {
 
-			MyLog.getLog().i("关闭Activity广播");
+			MLog.getIns().i("关闭Activity广播");
 			mActivity.finish();
 		}
 	}

@@ -43,7 +43,9 @@ import java.util.concurrent.Executor;
 
 import org.zywx.wbpalmstar.engine.universalex.EUExUtil;
 import org.zywx.wbpalmstar.plugin.uexpdf.CloseActivityReceiver;
+import org.zywx.wbpalmstar.plugin.uexpdf.StaticValues;
 import org.zywx.wbpalmstar.plugin.uexpdf.util.LocalBroadcastUtil;
+import org.zywx.wbpalmstar.plugin.uexpdf.util.MLog;
 
 class ThreadPerTaskExecutor implements Executor {
 	public void execute(Runnable r) {
@@ -209,8 +211,7 @@ public class MuPDFActivity extends Activity implements FilePicker.FilePickerSupp
 					mAlertDialog.setButton(AlertDialog.BUTTON3, EUExUtil.getString("cancel"), listener);
 					pressed[2] = MuPDFAlert.ButtonPressed.Cancel;
 				case YesNo:
-					mAlertDialog.setButton(AlertDialog.BUTTON1, EUExUtil.getString("plugin_uexpdfreader_yes"),
-							listener);
+					mAlertDialog.setButton(AlertDialog.BUTTON1, EUExUtil.getString("plugin_uexpdfreader_yes"), listener);
 					pressed[0] = MuPDFAlert.ButtonPressed.Yes;
 					mAlertDialog.setButton(AlertDialog.BUTTON2, EUExUtil.getString("plugin_uexpdfreader_no"), listener);
 					pressed[1] = MuPDFAlert.ButtonPressed.No;
@@ -350,14 +351,12 @@ public class MuPDFActivity extends Activity implements FilePicker.FilePickerSupp
 						buffer = null;
 						getResources();
 						AlertDialog alert = mAlertBuilder.create();
-						setTitle(String.format(EUExUtil.getString("plugin_uexpdfreader_cannot_open_document_Reason"),
-								reason));
-						alert.setButton(AlertDialog.BUTTON_POSITIVE, EUExUtil.getString("plugin_uexpdfreader_dismiss"),
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int which) {
-										finish();
-									}
-								});
+						setTitle(String.format(EUExUtil.getString("plugin_uexpdfreader_cannot_open_document_Reason"), reason));
+						alert.setButton(AlertDialog.BUTTON_POSITIVE, EUExUtil.getString("plugin_uexpdfreader_dismiss"), new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								finish();
+							}
+						});
 						alert.show();
 						return;
 					}
@@ -384,12 +383,11 @@ public class MuPDFActivity extends Activity implements FilePicker.FilePickerSupp
 		if (core == null) {
 			AlertDialog alert = mAlertBuilder.create();
 			alert.setTitle(EUExUtil.getString("plugin_uexpdfreader_cannot_open_document"));
-			alert.setButton(AlertDialog.BUTTON_POSITIVE, EUExUtil.getString("plugin_uexpdfreader_dismiss"),
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-							finish();
-						}
-					});
+			alert.setButton(AlertDialog.BUTTON_POSITIVE, EUExUtil.getString("plugin_uexpdfreader_dismiss"), new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					finish();
+				}
+			});
 			alert.setOnCancelListener(new OnCancelListener() {
 
 				@Override
@@ -444,23 +442,21 @@ public class MuPDFActivity extends Activity implements FilePicker.FilePickerSupp
 		AlertDialog alert = mAlertBuilder.create();
 		alert.setTitle(EUExUtil.getString("plugin_uexpdfreader_enter_password"));
 		alert.setView(mPasswordView);
-		alert.setButton(AlertDialog.BUTTON_POSITIVE, EUExUtil.getString("confirm"),
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						if (core.authenticatePassword(mPasswordView.getText().toString())) {
-							createUI(savedInstanceState);
-						} else {
-							requestPassword(savedInstanceState);
-						}
-					}
-				});
-		alert.setButton(AlertDialog.BUTTON_NEGATIVE, EUExUtil.getString("cancel"),
-				new DialogInterface.OnClickListener() {
+		alert.setButton(AlertDialog.BUTTON_POSITIVE, EUExUtil.getString("confirm"), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				if (core.authenticatePassword(mPasswordView.getText().toString())) {
+					createUI(savedInstanceState);
+				} else {
+					requestPassword(savedInstanceState);
+				}
+			}
+		});
+		alert.setButton(AlertDialog.BUTTON_NEGATIVE, EUExUtil.getString("cancel"), new DialogInterface.OnClickListener() {
 
-					public void onClick(DialogInterface dialog, int which) {
-						finish();
-					}
-				});
+			public void onClick(DialogInterface dialog, int which) {
+				finish();
+			}
+		});
 		alert.show();
 	}
 
@@ -601,8 +597,7 @@ public class MuPDFActivity extends Activity implements FilePicker.FilePickerSupp
 				setButtonEnabled(mSearchFwd, haveText);
 
 				// Remove any previous search results
-				if (SearchTaskResult.get() != null
-						&& !mSearchText.getText().toString().equals(SearchTaskResult.get().txt)) {
+				if (SearchTaskResult.get() != null && !mSearchText.getText().toString().equals(SearchTaskResult.get().txt)) {
 					SearchTaskResult.set(null);
 					mDocView.resetupChildren();
 				}
@@ -743,8 +738,7 @@ public class MuPDFActivity extends Activity implements FilePicker.FilePickerSupp
 
 	private void toggleReflow() {
 		reflowModeSet(!mReflow);
-		showInfo(mReflow ? EUExUtil.getString("plugin_uexpdfreader_entering_reflow_mode")
-				: EUExUtil.getString("plugin_uexpdfreader_leaving_reflow_mode"));
+		showInfo(mReflow ? EUExUtil.getString("plugin_uexpdfreader_entering_reflow_mode") : EUExUtil.getString("plugin_uexpdfreader_leaving_reflow_mode"));
 	}
 
 	@Override
@@ -967,8 +961,7 @@ public class MuPDFActivity extends Activity implements FilePicker.FilePickerSupp
 
 		int currentApiVersion = android.os.Build.VERSION.SDK_INT;
 		if (currentApiVersion >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-			new SafeAnimatorInflater((Activity) this, EUExUtil.getResAnimatorID("plugin_uexpdfreader_info"),
-					(View) mInfoView);
+			new SafeAnimatorInflater((Activity) this, EUExUtil.getResAnimatorID("plugin_uexpdfreader_info"), (View) mInfoView);
 		} else {
 			mInfoView.setVisibility(View.VISIBLE);
 			mHandler.postDelayed(new Runnable() {
@@ -1008,6 +1001,17 @@ public class MuPDFActivity extends Activity implements FilePicker.FilePickerSupp
 			mProofButton.setVisibility(View.INVISIBLE);
 		}
 		mSepsButton.setVisibility(View.INVISIBLE);
+
+		MLog.getIns().i("StaticValues.isShowTools = " + StaticValues.isShowTools);
+		// TODO
+		if (!StaticValues.isShowTools) {
+			mSepsButton.setVisibility(View.GONE);
+			mLinkButton.setVisibility(View.GONE);
+			mReflowButton.setVisibility(View.GONE);
+			mOutlineButton.setVisibility(View.GONE);
+			mSearchButton.setVisibility(View.GONE);
+			mMoreButton.setVisibility(View.GONE);
+		}
 	}
 
 	public void OnMoreButtonClick(View v) {
@@ -1300,8 +1304,7 @@ public class MuPDFActivity extends Activity implements FilePicker.FilePickerSupp
 			if (pageView != null)
 				success = pageView.copySelection();
 			mTopBarMode = TopBarMode.More;
-			showInfo(success ? EUExUtil.getString("plugin_uexpdfreader_copied_to_clipboard")
-					: EUExUtil.getString("plugin_uexpdfreader_no_text_selected"));
+			showInfo(success ? EUExUtil.getString("plugin_uexpdfreader_copied_to_clipboard") : EUExUtil.getString("plugin_uexpdfreader_no_text_selected"));
 			break;
 
 		case Highlight:
